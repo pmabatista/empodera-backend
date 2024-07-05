@@ -13,7 +13,7 @@ export class Contract {
   @Column()
   contractDate: Date;
 
-  @Column()
+  @Column('float')
   contractValue: number;
 
   @Column({
