@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { ContractDto } from './dto/create-contract.dto';
+import { ContractDto } from './dto/contract.dto';
 import { Contract } from './entities/contract.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';

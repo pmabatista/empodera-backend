@@ -8,7 +8,7 @@ import {
   Delete,
 } from '@nestjs/common';
 import { ClientService } from './client.service';
-import { ClientDto } from './dto/create-client.dto';
+import { ClientDto } from './dto/client.dto';
 
 @Controller('client')
 export class ClientController {
