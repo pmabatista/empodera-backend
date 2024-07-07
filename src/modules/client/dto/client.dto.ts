@@ -1,4 +1,10 @@
-import { IsNotEmpty, IsString, IsPhoneNumber } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsString,
+  IsPhoneNumber,
+  IsOptional,
+} from 'class-validator';
+import { Contract } from 'src/modules/contract/entities/contract.entity';
 
 export class ClientDto {
   @IsNotEmpty()
@@ -12,4 +18,7 @@ export class ClientDto {
   @IsNotEmpty()
   @IsPhoneNumber('BR')
   phone: string;
+
+  @IsOptional()
+  contracts: Contract[];
 }

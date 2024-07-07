@@ -3,16 +3,20 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
+  Put,
 } from '@nestjs/common';
 import { ContractService } from './contract.service';
 import { ContractDto } from './dto/contract.dto';
+import { ResponseService } from '../../common/services/response.service';
 
 @Controller('contract')
 export class ContractController {
-  constructor(private readonly contractService: ContractService) {}
+  constructor(
+    private readonly contractService: ContractService,
+    private readonly responseService: ResponseService,
+  ) {}
 
   @Post()
   create(@Body() createContractDto: ContractDto) {
@@ -20,8 +24,9 @@ export class ContractController {
   }
 
   @Get()
-  findAll() {
-    return this.contractService.findAll();
+  async findAll() {
+    const contracts = await this.contractService.findAll();
+    return this.responseService.formatResponse(contracts);
   }
 
   @Get(':id')
@@ -29,7 +34,7 @@ export class ContractController {
     return this.contractService.findOne(+id);
   }
 
-  @Patch(':id')
+  @Put(':id')
   update(@Param('id') id: string, @Body() updateContractDto: ContractDto) {
     return this.contractService.update(+id, updateContractDto);
   }

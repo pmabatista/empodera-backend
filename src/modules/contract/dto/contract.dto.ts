@@ -14,7 +14,7 @@ export class ContractDto {
 
   @IsNotEmpty()
   @IsDate()
-  contractDate: Date;
+  contractDate: string;
 
   @IsNotEmpty()
   @IsNumber()
