@@ -20,5 +20,5 @@ export class ClientDto {
   phone: string;
 
   @IsOptional()
-  contracts: Contract[];
+  contract: Contract;
 }

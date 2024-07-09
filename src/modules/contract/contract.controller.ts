@@ -6,10 +6,13 @@ import {
   Param,
   Delete,
   Put,
+  Patch,
+  Query,
 } from '@nestjs/common';
 import { ContractService } from './contract.service';
 import { ContractDto } from './dto/contract.dto';
 import { ResponseService } from '../../common/services/response.service';
+import { ContractStatus } from './enum/contract-status.enum';
 
 @Controller('contract')
 export class ContractController {
@@ -24,9 +27,9 @@ export class ContractController {
   }
 
   @Get()
-  async findAll() {
-    const contracts = await this.contractService.findAll();
-    return this.responseService.formatResponse(contracts);
+  async findMany(@Query('status') status: ContractStatus) {
+    const contract = await this.contractService.findMany(status);
+    return this.responseService.formatResponse(contract);
   }
 
   @Get(':id')
@@ -42,5 +45,10 @@ export class ContractController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.contractService.remove(+id);
+  }
+
+  @Patch(':id/cancel')
+  cancel(@Param('id') id: string) {
+    return this.contractService.cancel(+id);
   }
 }

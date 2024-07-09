@@ -1,5 +1,11 @@
 import { Contract } from '../../contract/entities/contract.entity';
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  OneToOne,
+  JoinColumn,
+} from 'typeorm';
 
 @Entity()
 export class Client {
@@ -15,6 +21,7 @@ export class Client {
   @Column()
   phone: string;
 
-  @OneToMany(() => Contract, (contract) => contract.client)
-  contracts: Contract[];
+  @OneToOne(() => Contract, { nullable: true })
+  @JoinColumn({ name: 'contractId' })
+  contract: Contract;
 }

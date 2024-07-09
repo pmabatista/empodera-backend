@@ -36,7 +36,7 @@ export class ClientController {
 
   @Put(':id')
   update(@Param('id') id: string, @Body() updateClientDto: ClientDto) {
-    delete updateClientDto.contracts;
+    delete updateClientDto.contract;
     return this.clientService.update(+id, updateClientDto);
   }
 
