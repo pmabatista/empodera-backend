@@ -1,8 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { ClientDto } from './dto/client.dto';
-import { Repository } from 'typeorm';
-import { Client } from './entities/client.entity';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { ClientDto } from './dto/client.dto';
+import { Client } from './entities/client.entity';
+import { ContractStatus } from '../contract/enum/contract-status.enum';
 
 @Injectable()
 export class ClientService {
@@ -11,12 +12,36 @@ export class ClientService {
     private clientsRepository: Repository<Client>,
   ) {}
 
-  create(createClientDto: ClientDto) {
-    return this.clientsRepository.save(createClientDto);
+  async create(createClientDto: ClientDto) {
+    const client = this.clientsRepository.create({
+      name: createClientDto.name,
+      document: createClientDto.document,
+      phone: createClientDto.phone,
+      contract: {
+        contractNumber: createClientDto.contractNumber,
+        contractDate: createClientDto.contractDate,
+        contractValue: createClientDto.contractValue,
+        status: createClientDto.contractStatus,
+      },
+    });
+    return this.clientsRepository.save(client);
   }
 
-  findAll() {
-    return this.clientsRepository.find({ relations: ['contract'] });
+  async findMany(
+    status?: ContractStatus,
+    page: number = 1,
+    limit: number = 10,
+  ) {
+    const [results, total] = await this.clientsRepository.findAndCount({
+      relations: ['contract'],
+      where: { contract: { status } },
+      take: limit,
+      skip: (page - 1) * limit,
+    });
+
+    const hasNext = page * limit < total;
+
+    return { data: results, hasNext };
   }
 
   async findOne(id: number) {
@@ -27,18 +52,31 @@ export class ClientService {
     if (!client) {
       throw new NotFoundException(`Client with ID ${id} not found`);
     }
-    const contractId = client?.contract?.id;
+    const { contract } = client;
     delete client.contract;
     return {
       ...client,
-      contractId,
+      contractId: contract.id,
+      contractNumber: contract.contractNumber,
+      contractDate: contract.contractDate.toLocaleDateString('en-CA'),
+      contractValue: contract.contractValue,
+      contractStatus: contract.status,
     };
   }
 
   async update(id: number, updateClientDto: ClientDto): Promise<Client> {
     const client = await this.clientsRepository.preload({
       id,
-      ...updateClientDto,
+      name: updateClientDto.name,
+      document: updateClientDto.document,
+      phone: updateClientDto.phone,
+      contract: {
+        id: updateClientDto.contractId,
+        contractNumber: updateClientDto.contractNumber,
+        contractDate: updateClientDto.contractDate,
+        contractValue: updateClientDto.contractValue,
+        status: updateClientDto.contractStatus,
+      },
     });
     if (!client) {
       throw new NotFoundException(`Client with ID ${id} not found`);
@@ -46,7 +84,7 @@ export class ClientService {
     return this.clientsRepository.save(client);
   }
 
-  remove(id: number) {
-    return this.clientsRepository.delete(id);
+  async remove(id: number) {
+    await this.clientsRepository.delete(id);
   }
 }

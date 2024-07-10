@@ -21,7 +21,7 @@ export class Client {
   @Column()
   phone: string;
 
-  @OneToOne(() => Contract, { nullable: true })
-  @JoinColumn({ name: 'contractId' })
+  @OneToOne(() => Contract, { cascade: true })
+  @JoinColumn()
   contract: Contract;
 }
