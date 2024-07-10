@@ -1,73 +1,93 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Backend NestJS
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## Por que NestJS?
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+Fiz a escolha do NestJS para o backend devido a alguns motivos:
 
-## Description
+- **TypeScript**: Permite desenvolvimento mais seguro e escalável, com tipagem estática e suporte moderno a ECMAScript.
+- **Framework Opinionado**: Facilita a estruturação do código e a organização do projeto, seguindo boas práticas.
+- **Suporte a Decorators**: Facilita a criação de controladores, serviços e módulos de forma estruturada.
+- **Injeção de Dependências**: Promove um código mais modular e testável.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Por que PostgreSQL?
 
-## Installation
+Escolhi o PostgreSQL como banco de dados para este projeto pelas seguintes razões:
 
-```bash
-$ yarn install
-```
+- **Relacional e ACID**: O PostgreSQL oferece suporte completo a transações ACID (Atomicidade, Consistência, Isolamento e Durabilidade), adequado para aplicações que requerem integridade de dados.
+- **Escalabilidade**: É altamente escalável, permitindo o crescimento do volume de dados e o aumento da carga de trabalho conforme necessário.
+- **Flexibilidade**: Suporta diversos tipos de dados e oferece recursos avançados para consultas complexas.
 
-## Running the app
+## Configuração das Variáveis de Ambiente
 
-```bash
-# development
-$ yarn run start
+Antes de executar o servidor localmente, é necessário configurar as seguintes variáveis de ambiente:
 
-# watch mode
-$ yarn run start:dev
+- `POSTGRES_HOST`: Host do servidor PostgreSQL.
+- `POSTGRES_PORT`: Porta utilizada pelo PostgreSQL (normalmente 5432).
+- `POSTGRES_USER`: Usuário do PostgreSQL.
+- `POSTGRES_PASSWORD`: Senha do usuário do PostgreSQL.
+- `POSTGRES_DB`: Nome do banco de dados PostgreSQL a ser utilizado pelo aplicativo.
 
-# production mode
-$ yarn run start:prod
-```
+Você pode configurar essas variáveis de ambiente de diferentes maneiras, como definindo-as no seu ambiente de desenvolvimento ou utilizando um arquivo `.env`.
 
-## Test
+## Como Executar
+
+### Pré-requisitos
+
+- Node.js versão 20 ou superior
+- Docker (opcional, para execução via contêiner)
+
+### Executar Local
+
+1. **Instalação das Dependências**
+
+   ```bash
+   npm install
+   ```
+
+2. **Compilação do TypeScript**
+
+   ```bash
+   npm run build
+   ```
+
+3. **Execução do Servidor**
+
+   ```bash
+   npm start
+   ```
+
+O servidor estará acessível em http://localhost:3000
+
+### Executando via Docker
+
+- Para executar via Docker, você pode construir uma imagem Docker do projeto:
+
+   ```bash
+   docker build -t backend-nestjs .
+   ```
+
+- Depois executar o docker-compose para executar o projeto:
+
+   ```bash
+   docker-compose up -d
+   ```
+
+
+O servidor estará acessível em http://localhost:3000
+
+
+## Testes
+
+Para testar execute os seguintes comandos:
 
 ```bash
 # unit tests
-$ yarn run test
+$ npm run test
 
 # e2e tests
-$ yarn run test:e2e
+$ npm run test:e2e
 
 # test coverage
-$ yarn run test:cov
+ npm run test:cov
 ```
 
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).

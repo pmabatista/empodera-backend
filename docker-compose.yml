@@ -1,17 +1,35 @@
 version: '3.8'
-
 services:
-  db:
-    image: postgres:13
-    container_name: empodera-db
-    environment:
-      POSTGRES_USER: empodera
-      POSTGRES_PASSWORD: empodera
-      POSTGRES_DB: empodera_db
-    volumes:
-      - db_data:/var/lib/postgresql/data
+  backend:
+    image: backend-nestjs
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
-      - "5432:5432"
-      
-volumes:
-  db_data:
+      - '3000:3000'
+    environment:
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=myuser
+      - POSTGRES_PASSWORD=mypassword
+      - POSTGRES_DB=mydatabase
+    networks:
+      - empodera-network
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+      POSTGRES_DB: mydatabase
+    ports:
+      - '5432:5432'
+    networks:
+      - empodera-network
+
+networks:
+  empodera-network:
+    driver: bridge
