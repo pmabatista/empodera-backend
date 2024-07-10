@@ -1,53 +1,15 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Param,
-  Delete,
-  Put,
-  Patch,
-  Query,
-} from '@nestjs/common';
+import { Controller, HttpCode, Param, Patch } from '@nestjs/common';
 import { ContractService } from './contract.service';
-import { ContractDto } from './dto/contract.dto';
-import { ResponseService } from '../../common/services/response.service';
-import { ContractStatus } from './enum/contract-status.enum';
+import { ApiResponse, ApiNotFoundResponse } from '@nestjs/swagger';
 
 @Controller('contract')
 export class ContractController {
-  constructor(
-    private readonly contractService: ContractService,
-    private readonly responseService: ResponseService,
-  ) {}
-
-  @Post()
-  create(@Body() createContractDto: ContractDto) {
-    return this.contractService.create(createContractDto);
-  }
-
-  @Get()
-  async findMany(@Query('status') status: ContractStatus) {
-    const contract = await this.contractService.findMany(status);
-    return this.responseService.formatResponse(contract);
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.contractService.findOne(+id);
-  }
-
-  @Put(':id')
-  update(@Param('id') id: string, @Body() updateContractDto: ContractDto) {
-    return this.contractService.update(+id, updateContractDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.contractService.remove(+id);
-  }
+  constructor(private readonly contractService: ContractService) {}
 
   @Patch(':id/cancel')
+  @HttpCode(204)
+  @ApiResponse({ status: 204, description: 'Contract canceled successfully.' })
+  @ApiNotFoundResponse({ description: 'Contract not found.' })
   cancel(@Param('id') id: string) {
     return this.contractService.cancel(+id);
   }

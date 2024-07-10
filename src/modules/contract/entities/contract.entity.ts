@@ -1,11 +1,5 @@
 import { Client } from '../../client/entities/client.entity';
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  JoinColumn,
-  OneToOne,
-} from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne } from 'typeorm';
 import { ContractStatus } from '../enum/contract-status.enum';
 
 @Entity()
@@ -29,7 +23,6 @@ export class Contract {
   })
   status: ContractStatus;
 
-  @OneToOne(() => Client, { nullable: false })
-  @JoinColumn({ name: 'clientId' })
+  @OneToOne(() => Client, (client) => client.contract, { nullable: true })
   client: Client;
 }
